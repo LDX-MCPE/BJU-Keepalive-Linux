@@ -1,7 +1,7 @@
 BJU Proxy Keepalive Script for Linux
 ====================================
 
-Install Dependancies
+Install Dependencies
 --------------------
 
 `sudo apt install python3 python3-pip`
