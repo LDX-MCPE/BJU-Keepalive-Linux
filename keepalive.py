@@ -31,12 +31,12 @@ myOldStatus = 0
 # Get the username and password
 
 if len(sys.argv) >= 3:
-    username = sys.argv[1]
-    password = sys.argv[2]
+    username = sys.argv[1].strip()
+    password = sys.argv[2].strip()
 else:
-    while username.strip() == "":
+    while username == "":
         username = input("Username: ")
-    while password.strip() == "":
+    while password == "":
         password = getpass.getpass("Password: ")
     print("")
 
