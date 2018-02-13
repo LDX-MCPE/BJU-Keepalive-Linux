@@ -35,9 +35,9 @@ if len(sys.argv) >= 3:
     password = sys.argv[2].strip()
 else:
     while username == "":
-        username = input("Username: ")
+        username = input("Username: ").strip()
     while password == "":
-        password = getpass.getpass("Password: ")
+        password = getpass.getpass("Password: ").strip()
     print("")
 
 # Log out the user
