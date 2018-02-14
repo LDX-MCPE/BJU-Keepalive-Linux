@@ -2,19 +2,17 @@
 
 # BJU Proxy Keepalive Script for Linux
 # Created By: Luke Darling
-# Version: 1.0
+# Version: 1.1
 # Creation Date: 2/9/2018
+# Modification Date: 2/14/2018
 
 
 # Imports
 
 import sys, time, getpass
 
-
-# You must install `requests` module using `pip3 install requests`
-
 import requests
-from requests.auth import HTTPBasicAuth
+from requests_ntlm import HttpNtlmAuth
 
 
 # Define variables
@@ -38,7 +36,6 @@ else:
         username = input("Username: ").strip()
     while password == "":
         password = getpass.getpass("Password: ").strip()
-    print("")
 
 # Log out the user
 requests.get("http://proxylogout.bju.edu/")
@@ -57,10 +54,11 @@ while True:
         loopCount = 0
 
         if myStatus == 404:
-            requests.get("https://proxy1.bju.edu:4433/", auth=(username, password), params={"cfru":"aHR0cHM6Ly9wcm94eTEuYmp1LmVkdS8="})
+            requests.get("https://proxy1.bju.edu:4433/", auth=HttpNtlmAuth("BJU.EDU\\" + username, password))
+
 
         elif myStatus == 504:
-            requests.get("https://proxy2.bju.edu:4433/", auth=(username, password), params={"cfru":"aHR0cHM6Ly9wcm94eTIuYmp1LmVkdS8="})
+            requests.get("https://proxy2.bju.edu:4433/", auth=HttpNtlmAuth("BJU.EDU\\" + username, password))
 
     # Update loop variables and sleep for 60 seconds
     myOldStatus = myStatus
