@@ -44,23 +44,26 @@ print("Starting BJU proxy keepalive script...")
 
 # Loop infinitely
 while True:
+    try:
+        # Check the status
+        req = requests.get("http://keepalive.bju.net/proxycheck")
+        myStatus = req.status_code
 
-    # Check the status
-    req = requests.get("http://keepalive.bju.net/proxycheck")
-    myStatus = req.status_code
+        # If required, attempt to authenticate
+        if myStatus != myOldStatus or loopCount >= refreshMinutes:
+            loopCount = 0
 
-    # If required, attempt to authenticate
-    if myStatus != myOldStatus or loopCount >= refreshMinutes:
-        loopCount = 0
-
-        if myStatus == 404:
-            requests.get("https://proxy1.bju.edu:4433/", auth=HttpNtlmAuth("BJU.EDU\\" + username, password))
+            if myStatus == 404:
+                requests.get("https://proxy1.bju.edu:4433/", auth=HttpNtlmAuth("BJU.EDU\\" + username, password))
 
 
-        elif myStatus == 504:
-            requests.get("https://proxy2.bju.edu:4433/", auth=HttpNtlmAuth("BJU.EDU\\" + username, password))
+            elif myStatus == 504:
+                requests.get("https://proxy2.bju.edu:4433/", auth=HttpNtlmAuth("BJU.EDU\\" + username, password))
 
-    # Update loop variables and sleep for 60 seconds
-    myOldStatus = myStatus
-    loopCount += 1
-    time.sleep(60)
+        # Update loop variables and sleep for 60 seconds
+        myOldStatus = myStatus
+        loopCount += 1
+        time.sleep(10)
+    except:
+        time.sleep(10)
+        continue
